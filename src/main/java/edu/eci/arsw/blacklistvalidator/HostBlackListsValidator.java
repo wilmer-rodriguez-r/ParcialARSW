@@ -44,8 +44,14 @@ public class HostBlackListsValidator {
 
         //partir los registros
         int range = skds.getRegisteredServersCount()/threads;
+        int mod = skds.getRegisteredServersCount()%threads;
         for(int i = 0; i < threads; i++) {
-            HostBlackThread thread = new HostBlackThread(skds, i*range, (i+1)*range, blackListOcurrences, ocurrencesCount, checkedListsCount,ipaddress);
+            HostBlackThread thread;
+            if (i != threads - 1 && mod != 0) {
+                thread = new HostBlackThread(skds, i*range, (i+1)*range, blackListOcurrences, ocurrencesCount, checkedListsCount,ipaddress);
+            } else {
+                thread = new HostBlackThread(skds, i*range, (i+1)*range + mod, blackListOcurrences, ocurrencesCount, checkedListsCount,ipaddress);
+            }
             threadsList.add(thread);
             thread.start();
         }
