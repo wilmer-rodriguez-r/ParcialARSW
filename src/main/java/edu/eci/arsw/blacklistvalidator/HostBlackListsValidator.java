@@ -42,7 +42,7 @@ public class HostBlackListsValidator {
         
         AtomicInteger checkedListsCount= new AtomicInteger(0);
 
-        //partir los registros
+        // Partir los registros
         int range = skds.getRegisteredServersCount()/threads;
         int mod = skds.getRegisteredServersCount()%threads;
         for(int i = 0; i < threads; i++) {
@@ -55,6 +55,7 @@ public class HostBlackListsValidator {
             threadsList.add(thread);
             thread.start();
         }
+        // Esperar a que los hilos terminen
         for(HostBlackThread thread : threadsList) {
             try {
                 thread.join();
@@ -80,6 +81,8 @@ public class HostBlackListsValidator {
             skds.reportAsTrustworthy(ipaddress);
         }
         */
+
+        // Reportar si la ip no es valida
         if (ocurrencesCount.get()>=BLACK_LIST_ALARM_COUNT){
             skds.reportAsNotTrustworthy(ipaddress);
         }
@@ -87,8 +90,9 @@ public class HostBlackListsValidator {
             skds.reportAsTrustworthy(ipaddress);
         }
 
+        // Notificar
         LOG.log(Level.INFO, "Checked Black Lists:{0} of {1}", new Object[]{checkedListsCount, skds.getRegisteredServersCount()});
-        
+        //Retornar las listas
         return blackListOcurrences;
     }
 

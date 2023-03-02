@@ -33,8 +33,8 @@ public class HostBlackThread extends Thread{
             if (skds.isInBlackListServer(i, ipaddress)){
                 synchronized (blackListOcurrences) {
                     blackListOcurrences.add(i);
-                    ocurrencesCount.addAndGet(1);
                 }
+                ocurrencesCount.addAndGet(1);
             }
         }
     }
